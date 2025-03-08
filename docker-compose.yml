@@ -1,0 +1,256 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres  # 🔥 S'assurer que ce fichier existe
+    image: mon-postgres
+    container_name: db-container
+    restart: always
+    environment:
+      POSTGRES_DB: monapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+    volumes:
+      - db-data:/var/lib/postgresql/data  # 🔥 Sauvegarde les données PostgreSQL
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      retries: 5
+      start_period: 10s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile  # 🔥 Assure-toi que ce fichier existe
+    image: mon-api
+    container_name: api-container
+    depends_on:
+      db:
+        condition: service_healthy  # 🔥 Attendre que PostgreSQL soit prêt avant de démarrer
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=db-container;Port=5432;Database=monapi;Username=postgres;Password=postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+    volumes:
+      - api-logs:/app/logs  # 🔥 Sauvegarde les logs de l’API
+
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx  # 🔥 S'assurer que ce fichier existe
+    image: mon-nginx
+    container_name: nginx-container
+    depends_on:
+      - api
+    ports:
+      - "80:80"
+    networks:
+      - app-network
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # 🔥 Charge la configuration de Nginx
+      - nginx-logs:/var/log/nginx  # 🔥 Stocke les logs de Nginx
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db-data:  # 🔥 Volume pour stocker les données PostgreSQL
+  api-logs:  # 🔥 Volume pour stocker les logs de l'API
+  nginx-logs:  # 🔥 Volume pour stocker les logs de Nginx
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# services:
+#   db:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.postgres  # 🔥 S'assurer que ce fichier existe
+#     image: mon-postgres
+#     container_name: db-container
+#     restart: always
+#     environment:
+#       POSTGRES_DB: monapi
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       - app-network
+#     healthcheck:   # 🔥 Vérifie que PostgreSQL est prêt avant que l'API démarre
+#       test: ["CMD", "pg_isready", "-U", "postgres"]
+#       interval: 5s
+#       retries: 5
+#       start_period: 10s
+
+#   api:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile  # 🔥 Assure-toi que ce fichier existe
+#     image: mon-api
+#     container_name: api-container
+#     depends_on:
+#       db:
+#         condition: service_healthy  # 🔥 Attendre que PostgreSQL soit prêt avant de démarrer
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Host=db-container;Port=5432;Database=monapi;Username=postgres;Password=postgres
+#     ports:
+#       - "8080:8080"
+#     networks:
+#       - app-network
+
+#   nginx:
+#     build:
+#       context: .
+#       dockerfile: Dockerfile.nginx  # 🔥 S'assurer que ce fichier existe
+#     image: mon-nginx
+#     container_name: nginx-container
+#     depends_on:
+#       - api
+#     ports:
+#       - "80:80"
+#     networks:
+#       - app-network
+#     volumes:
+#       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# services:
+#   db:
+#     build: 
+#       context: .
+#       dockerfile: Dockerfile.postgres
+#     image: mon-postgres  # Création de l'image PostgreSQL
+#     container_name: db-container
+#     restart: always
+#     environment:
+#       POSTGRES_DB: monapi
+#       POSTGRES_USER: postgres
+#       POSTGRES_PASSWORD: postgres
+#     ports:
+#       - "5432:5432"
+#     networks:
+#       - app-network
+
+#   api:
+#     build: 
+#       context: .
+#       dockerfile: Dockerfile
+#     image: mon-api  # Création de l'image de l'API
+#     container_name: api-container
+#     depends_on:
+#       - db:
+#           condition: service_healthy
+#     environment:
+#       - ConnectionStrings__DefaultConnection=Host=db-container;Port=5432;Database=monapi;Username=postgres;Password=postgres
+#     ports:
+#       - "8080:8080"
+#     networks:
+#       - app-network
+
+#   nginx:
+#     build: 
+#       context: .
+#       dockerfile: Dockerfile.nginx
+#     image: mon-nginx  # Création de l'image Nginx
+#     container_name: nginx-container
+#     depends_on:
+#       - api  
+#     ports:
+#       - "80:80"
+#     networks:
+#       - app-network
+
+# networks:
+#   app-network:
+#     driver: bridge
