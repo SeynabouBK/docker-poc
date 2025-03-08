@@ -5,10 +5,6 @@ on:
     branches:
       - master  # Déclenche l'action quand tu pushes sur la branche `master`
 
-env:
-  API_VERSION: 9.0  # 🔥 Version de l'API (correspond à celle du Dockerfile)
-  NGINX_VERSION: 1.25.1  # 🔥 Version de Nginx (correspond à celle du Dockerfile)
-
 jobs:
   build-and-push:
     name: Build & Push Docker Image
@@ -21,86 +17,21 @@ jobs:
       - name: Se connecter à Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      # 🔥 Construire l'image Docker de l'API avec une version spécifique
-      - name: Construire l'image Docker de l'API
-        run: docker build -t seynaboubk/mon-api:${{ env.API_VERSION }} -f Dockerfile .
+      # Construire l'image Docker de l'API
+      - name:  Construire l'image Docker de l'API
+        run: docker build -t seynaboubk/mon-api:latest -f Dockerfile .
 
-      # 🔥 Pousser l'image Docker de l'API avec une version spécifique
-      - name: Envoyer l'image API sur Docker Hub
-        run: docker push seynaboubk/mon-api:${{ env.API_VERSION }}
+      # Pousser l'image Docker de l'API sur Docker Hub
+      - name:  Envoyer l'image API sur Docker Hub
+        run: docker push seynaboubk/mon-api:latest
 
-      # 🔥 Construire l'image Docker de Nginx avec une version spécifique
-      - name: Construire l'image Docker de Nginx
-        run: docker build -t seynaboubk/mon-nginx:${{ env.NGINX_VERSION }} -f Dockerfile.nginx .
+      #  Construire l'image Docker de Nginx
+      - name:  Construire l'image Docker de Nginx
+        run: docker build -t seynaboubk/mon-nginx:latest -f Dockerfile.nginx .
 
-      # 🔥 Pousser l'image Docker de Nginx avec une version spécifique
-      - name: Envoyer l'image Nginx sur Docker Hub
-        run: docker push seynaboubk/mon-nginx:${{ env.NGINX_VERSION }}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# name: CI/CD Pipeline
-
-# on:
-#   push:
-#     branches:
-#       - master  # Déclenche l'action quand tu pushes sur la branche `master`
-
-# jobs:
-#   build-and-push:
-#     name: Build & Push Docker Image
-#     runs-on: ubuntu-latest  # GitHub va utiliser un serveur Linux
-
-#     steps:
-#       - name: Télécharger le code depuis GitHub
-#         uses: actions/checkout@v4  # GitHub télécharge le code
-
-#       - name: Se connecter à Docker Hub
-#         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-
-#       # Construire l'image Docker de l'API
-#       - name:  Construire l'image Docker de l'API
-#         run: docker build -t seynaboubk/mon-api:latest -f Dockerfile .
-
-#       # Pousser l'image Docker de l'API sur Docker Hub
-#       - name:  Envoyer l'image API sur Docker Hub
-#         run: docker push seynaboubk/mon-api:latest
-
-#       #  Construire l'image Docker de Nginx
-#       - name:  Construire l'image Docker de Nginx
-#         run: docker build -t seynaboubk/mon-nginx:latest -f Dockerfile.nginx .
-
-#       #  Pousser l'image Docker de Nginx sur Docker Hub
-#       - name:  Envoyer l'image Nginx sur Docker Hub
-#         run: docker push seynaboubk/mon-nginx:latest
+      #  Pousser l'image Docker de Nginx sur Docker Hub
+      - name:  Envoyer l'image Nginx sur Docker Hub
+        run: docker push seynaboubk/mon-nginx:latest
 
 
 
