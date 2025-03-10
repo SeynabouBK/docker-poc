@@ -19,19 +19,19 @@ jobs:
 
       # Construire l'image Docker de l'API
       - name:  Construire l'image Docker de l'API
-        run: docker build -t mon-api:latest -f Dockerfile .
+        run: docker build -t seynaboubk/mon-api:latest -f Dockerfile .
 
       # Pousser l'image Docker de l'API sur Docker Hub
       - name:  Envoyer l'image API sur Docker Hub
-        run: docker push mon-api:latest
+        run: docker push seynaboubk/mon-api:latest
 
       #  Construire l'image Docker de Nginx
       - name:  Construire l'image Docker de Nginx
-        run: docker build -t mon-nginx:latest -f Dockerfile.nginx .
+        run: docker build -t seynaboubk/mon-nginx:latest -f Dockerfile.nginx .
 
       #  Pousser l'image Docker de Nginx sur Docker Hub
       - name:  Envoyer l'image Nginx sur Docker Hub
-        run: docker push mon-nginx:latest
+        run: docker push seynaboubk/mon-nginx:latest
 
       #  Envoyer une notification Discord après le succès du déploiement
       - name: Envoyer une notification Discord
