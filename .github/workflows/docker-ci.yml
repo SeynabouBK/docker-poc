@@ -33,6 +33,17 @@ jobs:
       - name:  Envoyer l'image Nginx sur Docker Hub
         run: docker push seynaboubk/mon-nginx:latest
 
+      #  Envoyer une notification Discord après le succès du déploiement
+      - name: Envoyer une notification Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{
+            "content": " **Déploiement réussi !**\n\n **API :** seynaboubk/mon-api:latest\n **NGINX :** seynaboubk/mon-nginx:latest\n **Statut :**  Tout est opérationnel !"
+          }' $DISCORD_WEBHOOK_URL
+
 
 
 
