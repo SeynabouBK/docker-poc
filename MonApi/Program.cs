@@ -1,23 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System.Data;
-using MonApi.Models; // 🔥 Import du modèle `User`
+using MonApi.Models; // Import du modèle `User`
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔥 Connexion PostgreSQL forcée 🔥
+// Connexion PostgreSQL forcée
 var connectionString = "Host=db-container;Port=5432;Database=monapi;Username=postgres;Password=postgres";
-Console.WriteLine($"🔍 Connexion forcée à PostgreSQL avec : {connectionString}");
+Console.WriteLine($" Connexion forcée à PostgreSQL avec : {connectionString}");
 
 try
 {
     using var conn = new Npgsql.NpgsqlConnection(connectionString);
     conn.Open();
-    Console.WriteLine("✅ Connexion PostgreSQL réussie !");
+    Console.WriteLine(" Connexion PostgreSQL réussie !");
 }
 catch (Exception ex)
 {
-    Console.WriteLine("❌ Erreur de connexion à PostgreSQL : " + ex.Message);
+    Console.WriteLine(" Erreur de connexion à PostgreSQL : " + ex.Message);
 }
 
 // Ajout des services pour les contrôleurs
@@ -29,10 +29,10 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 
-// ✅ Test simple pour voir si l'API fonctionne
+//  Test simple pour voir si l'API fonctionne
 app.MapGet("/test", () => "API is running fine!");
 
-// ✅ Endpoint pour récupérer les utilisateurs depuis PostgreSQL
+//  Endpoint pour récupérer les utilisateurs depuis PostgreSQL
 app.MapGet("/api/users", async () =>
 {
     var users = new List<User>();
@@ -56,7 +56,7 @@ app.MapGet("/api/users", async () =>
     return Results.Ok(users);
 });
 
-// ✅ Endpoint pour ajouter un utilisateur
+//  Endpoint pour ajouter un utilisateur
 app.MapPost("/api/users", async ([FromBody] User user) =>
 {
     await using var conn = new NpgsqlConnection(connectionString);

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using MonApi.Models;  // ✅ Ajoute ceci pour éviter l'ambiguïté
+using MonApi.Models;  //  Ajoute ceci pour éviter l'ambiguïté
 
 [Route("api/[controller]")]
 [ApiController]
