@@ -116,7 +116,7 @@ volumes:
 #     build:
 #       context: .
 #       dockerfile: Dockerfile  # Assure-toi que ce fichier existe
-#     image: mon-api
+#     image: seynaboubk/mon-api:latest #mon-api
 #     container_name: api-container
 #     depends_on:
 #       db:
@@ -134,7 +134,7 @@ volumes:
 #     build:
 #       context: .
 #       dockerfile: Dockerfile.nginx  # S'assurer que ce fichier existe
-#     image: mon-nginx
+#     image: seynaboubk/mon-nginx:latest #mon-nginx
 #     container_name: nginx-container
 #     depends_on:
 #       - api
